@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "965d560d-f94c-4c82-9fb7-3b9ad314a08f",
+		"name": "PETSTORE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get \"available\" pets. Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Get available pets\", function () {\r",
+							"    pm.response.to.have.status(200); //Validate if the http code is 200\r",
+							"    pm.response.to.be.ok; //Validate if the result is OK (ok in postman)\r",
+							"    pm.response.to.be.json; //Validate if the response is a valid JSON\r",
+							"    pm.response.to.be.withBody; //Validate if the response has body\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "special-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/pet/findByStatus?status=available",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pet",
+						"findByStatus"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "available"
+						},
+						{
+							"key": "status",
+							"value": "pending",
+							"disabled": true
+						},
+						{
+							"key": "status",
+							"value": "sold",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post a new available pet to the store",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Post a new available pet to the store\", function () {\r",
+							"    pm.response.to.have.status(200); //Validate if the http code is 200\r",
+							"    pm.response.to.be.ok; //Validate if the result is OK (ok in postman)\r",
+							"    pm.response.to.be.json; //Validate if the response is a valid JSON\r",
+							"    pm.response.to.be.withBody; //Validate if the response has body\r",
+							"});\r",
+							"\r",
+							"\r",
+							"//Validate if the pet has been added to the store\r",
+							"pm.test(\"pet has been added\", function (){\r",
+							"    pm.sendRequest('https://petstore3.swagger.io/api/v3/pet/'+pm.environment.get(\"petID\"), function (err, response){\r",
+							"        pm.response.to.have.status(200);\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							" postman.setEnvironmentVariable(\"petID\", Math.floor(Math.random() * 1E4))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true,
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "special-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{petID}},\r\n  \"category\": {\r\n    \"id\": 0,\r\n    \"name\": \"string\"\r\n  },\r\n  \"name\": \"test01\",\r\n  \"photoUrls\": [\r\n    \"string\"\r\n  ],\r\n  \"tags\": [\r\n    {\r\n      \"id\": 0,\r\n      \"name\": \"string\"\r\n    }\r\n  ],\r\n  \"status\": \"available\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/pet",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update this pet status to \"sold\".",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Update this pet status to sold\", function () {\r",
+							"    pm.response.to.have.status(200); //Validate if the http code is 200\r",
+							"    pm.response.to.be.ok; //Validate if the result is OK (ok in postman)\r",
+							"    pm.response.to.be.json; //Validate if the response is a valid JSON\r",
+							"    pm.response.to.be.withBody; //Validate if the response has body\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Update this pet status to sold\", function () {\r",
+							"   var response = JSON.parse(responseBody);\r",
+							"   pm.expect(response.name).to.eql(\"test02\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "special-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": {{petID}},\r\n    \"category\": {\r\n        \"id\": 0,\r\n        \"name\": \"string\"\r\n    },\r\n    \"name\": \"test02\",\r\n    \"photoUrls\": [\r\n        \"string\"\r\n    ],\r\n    \"tags\": [\r\n        {\r\n            \"id\": 0,\r\n            \"name\": \"string\"\r\n        }\r\n    ],\r\n    \"status\": \"available\"\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/pet",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete this pet.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Delete this pet\", function () {\r",
+							"    pm.response.to.have.status(200); //Validate if the http code is 200\r",
+							"    pm.response.to.be.ok; //Validate if the result is OK (ok in postman)\r",
+							"    pm.response.to.be.json; //Validate if the response is a valid JSON\r",
+							"    pm.response.to.be.withBody; //Validate if the response has body\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Assert deletion\", function (){\r",
+							"    pm.sendRequest('https://petstore.swagger.io/v2/pet/'+pm.environment.get(\"petID\"), function (err, response){\r",
+							"        pm.expect(response.json().message).to.eql(\"Pet not found\");\r",
+							"    })\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"accept": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "in",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "special-key",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/pet/{{petID}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"pet",
+						"{{petID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
